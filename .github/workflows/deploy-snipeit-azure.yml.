@@ -1,4 +1,4 @@
-name: Deploy Snipe-IT on Azure with Terraform
+name: Deploy and Install Snipe-IT
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  deploy:
+  deploy_and_install:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,3 +27,12 @@ jobs:
       - name: Deploy with Terraform
         run: terraform apply -auto-approve
 
+      - name: SSH into Azure VM
+        uses: azure/ssh@v0
+        with:
+          host: ${{ steps.deploy.outputs.azurerm_linux_virtual_machine.snipeit_vm_public_ip }}
+          username: "adminuser"
+          password: "Password12345!"
+          script: |
+            # Run the Snipe-IT installation script
+            curl -sL https://raw.githubusercontent.com/your-repo/install-snipeit.sh | bash
