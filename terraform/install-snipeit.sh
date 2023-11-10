@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Update and install required packages
+
 sudo apt update
 sudo apt install -y apache2 mariadb-server mariadb-client php libapache2-mod-php composer npm
 
